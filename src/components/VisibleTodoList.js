@@ -1,10 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
-import {toggleTodo} from '../actions';
+import * as actions from '../actions';
 import { getVisibleTodos } from '../reducers'
-
-
+import { fetchTodos } from '../api';
 
 
 //presentational component
@@ -38,13 +37,39 @@ const TodoList = ({todos, onTodoClick}) => (
 );
 
 
-//maps the redux store state to the props of the TodoList component
-const mapStatetoProps = (state, {match}) => ({
-	todos: getVisibleTodos(
-			state,
-			match.params.filter || 'all'
+class VisibleTodoList extends React.Component {
+	componentDidMount(){
+		this.fetchData();
+	}
+
+	componentDidUpdate(prevProps){
+		if (this.props.filter !== prevProps.filter) {
+			this.fetchData();
+		}
+	}
+
+	fetchData() {
+		const {filter, receiveTodos} = this.props;
+		fetchTodos(filter).then(todos => 
+			receiveTodos(filter, todos)
 		)
-});
+	}
+
+	render() {
+		const {toggleTodo, ...rest} = this.props;
+		return <TodoList onTodoClick={toggleTodo} {...rest} />
+	}
+}
+
+
+//maps the redux store state to the props of the TodoList component
+const mapStatetoProps = (state, {match}) => {
+	const filter = match.params.filter || 'all';
+	return {
+		todos: getVisibleTodos(state, filter),
+		filter
+	};
+};
 //maps the dispatch method to the callback props of the TodoList component
 //in other words: which callback prop dispatches which action
 // const mapDispatchToProps = (dispatch) => ({
@@ -60,10 +85,10 @@ const mapStatetoProps = (state, {match}) => ({
 		want to inject and the action creator functions
 */
 
-const VisibleTodoList = withRouter(connect(
+VisibleTodoList = withRouter(connect(
 	mapStatetoProps,
-	{ onTodoClick: toggleTodo }
-)(TodoList));//passing the presentational component that I want to wrap and pass the props to
+	actions
+)(VisibleTodoList));//passing the presentational component that I want to wrap and pass the props to
 
 
 export default VisibleTodoList;
