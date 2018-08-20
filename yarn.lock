@@ -5756,6 +5756,10 @@ redux-promise@^0.6.0:
     flux-standard-action "^2.0.3"
     is-promise "^2.1.0"
 
+redux-thunk@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.npmjs.intuit.net:443/artifactory/api/npm/npm-intuit/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
+
 regenerate@^1.2.1:
   version "1.4.0"
   resolved "https://registry.npmjs.intuit.net:443/artifactory/api/npm/npm-intuit/regenerate/-/regenerate-1.4.0.tgz#4a856ec4b56e4077c557589cae85e7a4c8869a11"
