@@ -7,15 +7,18 @@ const receiveTodos = (filter, response) => ({
 	response
 });
 
-export const requestTodos = (filter) => ({
+const requestTodos = (filter) => ({
 	type: 'REQUEST_TODOS',
 	filter
 });
 
-export const fetchTodos = (filter) =>
-	api.fetchTodos(filter).then(response =>
-		receiveTodos(filter, response)
+export const fetchTodos = (filter) => (dispatch) => {
+	dispatch(requestTodos(filter));
+
+	return api.fetchTodos(filter).then(response =>
+		dispatch(receiveTodos(filter, response))
 	);
+};
 
 // this is an action creator
 export const addTodo = (text) => ({
