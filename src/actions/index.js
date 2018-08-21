@@ -1,5 +1,5 @@
-import * as api from './api';
-import {getIsFetching} from './reducers';
+import * as api from '../api';
+import {getIsFetching} from '../reducers';
 
 export const fetchTodos = (filter) => (dispatch, getState) => {
 	if (getIsFetching(getState(), filter)) {
